@@ -1,65 +1,60 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import "../components/Navbar.css";
+import { useState } from "react"
+import { Link, useLocation } from "react-router-dom"
+import { Menu, X, Globe } from "lucide-react"
+import { useLanguage } from "../contexts/LanguageContext"
+import "../components/css/Navbar.css"
 
 function Navbar() {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [language, setLanguage] = useState("english"); 
+  const [menuOpen, setMenuOpen] = useState(false)
+  const location = useLocation()
+  const { language, toggleLanguage, translations } = useLanguage()
+
+  const t = translations[language]
 
   const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
-  };
+    setMenuOpen(!menuOpen)
+  }
 
-  const translations = {
-    english: {
-      dashboard: "Dashboard",
-      milkProduction: "MilkProduction",
-      expenses: "Expenses",
-      loans: "Loans",
-      cows: "Cows",
-      dairy: "DairyFarm",
-    },
-    tamil: {
-      dashboard: "டாஷ்போர்ட்",
-      milkProduction: "பால் உற்பத்தி",
-      expenses: "செலவுகள்",
-      loans: "கடன்கள்",
-      cows: "மாடுகள்",
-      dairy: "பால் பண்ணை",
-    },
-  };
-
-  const t = translations[language];
+  const isActive = (path) => {
+    return location.pathname === path ? "active" : ""
+  }
 
   return (
     <div className="container">
       <header className="navbar">
         <div className="profile-container">
-          <h1>{t.dairy}</h1>
+          <Link to="/" className="brand-link">
+            <h1>{t.dairy}</h1>
+          </Link>
         </div>
         <button className="menu-icon" onClick={toggleMenu}>
-          <span className="bar"></span>
-          <span className="bar"></span>
-          <span className="bar"></span>
+          {menuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
         <nav className={menuOpen ? "open" : ""}>
-          <Link to="/" onClick={() => setMenuOpen(false)}>{t.dashboard}</Link>
-          <Link to="/Milk" onClick={() => setMenuOpen(false)}>{t.milkProduction}</Link>
-          <Link to="/Expenses" onClick={() => setMenuOpen(false)}>{t.expenses}</Link>
-          <Link to="/Loans" onClick={() => setMenuOpen(false)}>{t.loans}</Link>
-          <Link to="/CowManagement" onClick={() => setMenuOpen(false)}>{t.cows}</Link>
-          <button
-          className="language-button"
-          onClick={() =>
-            setLanguage(language === "english" ? "tamil" : "english")
-          }
-        >
-          {language === "english" ? "தமிழ்" : "English"}
-        </button>
+          <Link to="/" className={isActive("/")} onClick={() => setMenuOpen(false)}>
+            {t.dashboard}
+          </Link>
+          <Link to="/Milk" className={isActive("/Milk")} onClick={() => setMenuOpen(false)}>
+            {t.milkProduction}
+          </Link>
+          <Link to="/Expenses" className={isActive("/Expenses")} onClick={() => setMenuOpen(false)}>
+            {t.expenses}
+          </Link>
+          <Link to="/Loans" className={isActive("/Loans")} onClick={() => setMenuOpen(false)}>
+            {t.loans}
+          </Link>
+          <Link to="/CowManagement" className={isActive("/CowManagement")} onClick={() => setMenuOpen(false)}>
+            {t.cows}
+          </Link>
+          <button className="language-button" onClick={toggleLanguage}>
+            <Globe size={16} className="me-2" />
+            {language === "english" ? "தமிழ்" : "English"}
+          </button>
         </nav>
       </header>
     </div>
-  );
+  )
 }
 
-export default Navbar;
+export default Navbar
+

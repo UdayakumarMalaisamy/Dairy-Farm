@@ -1,330 +1,147 @@
-import React, { useState } from 'react';
-import { Plus } from 'lucide-react';
-import Navbar from './Navbar';
-import './Expenses.css';
-
+import { useState } from "react"
+import { Plus, Printer } from "lucide-react"
+import Navbar from "./Navbar"
+import { useLanguage } from "../contexts/LanguageContext"
+import "bootstrap/dist/css/bootstrap.min.css"
+import "../components/css/Expenses.css"
 
 const Expenses = () => {
+  const { language, translations } = useLanguage()
+  const t = translations[language]
+
   const initialExpenses = [
-    {
-      id: '1',
-      date: '2024-03-10',
-      category: 'தீவனம்',
-      amount: 85000,
-      description: 'மாத தீவன வழங்கல்',
-    },
-    {
-      id: '2',
-      date: '2024-03-09',
-      category: 'மருத்துவம்',
-      amount: 25000,
-      description: 'வழக்கமான பரிசோதனை',
-    },
-  ];
+    { id: "1", date: "2024-03-10", category: t.feed, amount: 85000, description: "மாத தீவன வழங்கல்" },
+    { id: "2", date: "2024-03-09", category: t.medical, amount: 25000, description: "வழக்கமான பரிசோதனை" },
+  ]
 
-  const [expenses, setExpenses] = useState(initialExpenses);
-  const [showAddForm, setShowAddForm] = useState(false);
-  const [newExpense, setNewExpense] = useState({});
+  const [expenses, setExpenses] = useState(initialExpenses)
+  const [showAddForm, setShowAddForm] = useState(false)
+  const [newExpense, setNewExpense] = useState({})
 
-  const totalExpenses = expenses.reduce((sum, expense) => sum + expense.amount, 0);
+  const totalExpenses = expenses.reduce((sum, expense) => sum + expense.amount, 0)
 
-  const formatIndianCurrency = (amount) => {
-    return new Intl.NumberFormat('ta-IN', {
-      style: 'currency',
-      currency: 'INR',
-      maximumFractionDigits: 0,
-    }).format(amount);
-  };
+  const formatIndianCurrency = (amount) =>
+    new Intl.NumberFormat("ta-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(amount)
 
   const handleAddExpense = (e) => {
-    e.preventDefault();
+    e.preventDefault()
     if (newExpense.amount && newExpense.category) {
       setExpenses([
         ...expenses,
         {
           ...newExpense,
           id: (expenses.length + 1).toString(),
-          date: new Date().toISOString().split('T')[0],
+          date: new Date().toISOString().split("T")[0],
         },
-      ]);
-      setShowAddForm(false);
-      setNewExpense({});
+      ])
+      setShowAddForm(false)
+      setNewExpense({})
     }
-  };
+  }
+
+  const handlePrint = () => {
+    window.print()
+  }
 
   return (
-    <div>
-        <Navbar/>
-      <div className="flex justify-between items-center mb-6">
-      
-        <h1 className="text-2xl font-semibold text-gray-900">செலவுகள்</h1>
-        <button
-          onClick={() => setShowAddForm(true)}
-          className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-        >
-          <Plus className="w-4 h-4 mr-2" />
-          செலவு சேர்க்க
-        </button>
-      </div>
-
-      <div className="mb-8">
-        <div className="bg-white overflow-hidden shadow rounded-lg">
-          <div className="p-5 flex items-center">
-            <div className="flex-shrink-0">
-              <span className="h-6 w-6 text-gray-400 text-2xl font-bold">₹</span>
-            </div>
-            <div className="ml-5 w-0 flex-1">
-              <dl>
-                <dt className="text-sm font-medium text-gray-500 truncate">மொத்த செலவுகள்</dt>
-                <dd className="text-lg font-medium text-gray-900">
-                  {formatIndianCurrency(totalExpenses)}
-                </dd>
-              </dl>
-            </div>
+    <div className="container mt-4">
+      <Navbar />
+      <div className="expenses-container">
+        <div className="header-actions">
+          <h1>{t.expensesTitle}</h1>
+          <div className="d-flex gap-3">
+            <button onClick={handlePrint} className="btn btn-success d-flex align-items-center">
+              <Printer size={18} className="me-2" />
+              {t.print}
+            </button>
+            <button onClick={() => setShowAddForm(true)} className="btn btn-primary d-flex align-items-center">
+              <Plus size={18} className="me-2" />
+              {t.addExpense}
+            </button>
           </div>
         </div>
-      </div>
 
-      {showAddForm && (
-        <div className="mb-8 bg-white p-6 rounded-lg shadow">
-          <h2 className="text-lg font-medium mb-4">புதிய செலவு சேர்க்க</h2>
-          <form onSubmit={handleAddExpense} className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700">வகை</label>
-              <select
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                value={newExpense.category || ''}
-                onChange={(e) => setNewExpense({ ...newExpense, category: e.target.value })}
-              >
-                <option value="">வகையைத் தேர்ந்தெடுக்கவும்</option>
-                <option>தீவனம்</option>
-                <option>மருத்துவம்</option>
-                <option>உபகரணங்கள்</option>
-                <option>வேலையாட்கள்</option>
-                <option>பயன்பாடுகள்</option>
-                <option>மற்றவை</option>
-              </select>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">தொகை (₹)</label>
-              <input
-                type="number"
-                step="1"
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                value={newExpense.amount || ''}
-                onChange={(e) =>
-                  setNewExpense({
-                    ...newExpense,
-                    amount: parseInt(e.target.value),
-                  })
-                }
-              />
-            </div>
-            <div className="col-span-2">
-              <label className="block text-sm font-medium text-gray-700">விவரம்</label>
-              <textarea
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                rows={3}
-                value={newExpense.description || ''}
-                onChange={(e) =>
-                  setNewExpense({ ...newExpense, description: e.target.value })
-                }
-              ></textarea>
-            </div>
-            <div className="col-span-2 flex justify-end gap-4">
-              <button
-                type="button"
-                onClick={() => setShowAddForm(false)}
-                className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
-              >
-                ரத்து செய்
-              </button>
-              <button
-                type="submit"
-                className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700"
-              >
-                சேமி
-              </button>
-            </div>
-          </form>
+        <div className="total-expenses-card">
+          <h5>{t.totalExpenses}</h5>
+          <h4>{formatIndianCurrency(totalExpenses)}</h4>
         </div>
-      )}
 
-      <div className="bg-white shadow-md rounded-lg overflow-hidden">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                தேதி
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                வகை
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                தொகை
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                விவரம்
-              </th>
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {expenses.map((expense) => (
-              <tr key={expense.id}>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {expense.date}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <span
-                    className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                      expense.category === 'தீவனம்'
-                        ? 'bg-green-100 text-green-800'
-                        : expense.category === 'மருத்துவம்'
-                        ? 'bg-blue-100 text-blue-800'
-                        : 'bg-yellow-100 text-yellow-800'
-                    }`}
-                  >
-                    {expense.category}
-                  </span>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {formatIndianCurrency(expense.amount)}
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-500">{expense.description}</td>
+        {showAddForm && (
+          <div className="card p-4 mb-4">
+            <h5 className="mb-3">{t.addExpense}</h5>
+            <form onSubmit={handleAddExpense} className="expense-form row g-3">
+              <div className="col-md-6">
+                <label className="form-label">{t.category}</label>
+                <select
+                  className="form-select"
+                  value={newExpense.category || ""}
+                  onChange={(e) => setNewExpense({ ...newExpense, category: e.target.value })}
+                >
+                  <option value="">{t.selectCategory}</option>
+                  <option>{t.feed}</option>
+                  <option>{t.medical}</option>
+                  <option>{t.equipment}</option>
+                  <option>{t.labor}</option>
+                  <option>{t.utilities}</option>
+                  <option>{t.other}</option>
+                </select>
+              </div>
+              <div className="col-md-6">
+                <label className="form-label">{t.amount}</label>
+                <input
+                  type="number"
+                  className="form-control"
+                  value={newExpense.amount || ""}
+                  onChange={(e) => setNewExpense({ ...newExpense, amount: Number.parseInt(e.target.value) })}
+                />
+              </div>
+              <div className="col-12">
+                <label className="form-label">{t.description}</label>
+                <textarea
+                  className="form-control"
+                  rows="3"
+                  value={newExpense.description || ""}
+                  onChange={(e) => setNewExpense({ ...newExpense, description: e.target.value })}
+                ></textarea>
+              </div>
+              <div className="col-12 d-flex justify-content-end gap-2">
+                <button type="button" className="btn btn-outline-secondary" onClick={() => setShowAddForm(false)}>
+                  {t.cancel}
+                </button>
+                <button type="submit" className="btn btn-primary">
+                  {t.save}
+                </button>
+              </div>
+            </form>
+          </div>
+        )}
+
+        <div className="table-responsive">
+          <table className="table table-bordered expense-table">
+            <thead>
+              <tr>
+                <th>{t.date}</th>
+                <th>{t.category}</th>
+                <th>{t.amount}</th>
+                <th>{t.description}</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {expenses.map((expense) => (
+                <tr key={expense.id}>
+                  <td>{expense.date}</td>
+                  <td>{expense.category}</td>
+                  <td className="expense-amount">{formatIndianCurrency(expense.amount)}</td>
+                  <td>{expense.description}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-
- 
-
-export default Expenses;
-
-// import React, { useState, useEffect } from 'react';
-// import { Plus } from 'lucide-react';
-// import Navbar from './Navbar';
-
-// function Expenses() {
-//   const [expenses, setExpenses] = useState([]);
-//   const [showAddForm, setShowAddForm] = useState(false);
-//   const [newExpense, setNewExpense] = useState({ date: '', category: '', amount: '', description: '' });
-
-//   useEffect(() => {
-//     fetch('http://localhost:5000/api/expenses')
-//       .then((response) => response.json())
-//       .then((data) => setExpenses(data))
-//       .catch((error) => console.error('Error fetching expenses:', error));
-//   }, []);
-
-//   const handleAddExpense = async (e) => {
-//     e.preventDefault();
-//     if (newExpense.amount && newExpense.category && newExpense.date) {
-//       try {
-//         const response = await fetch('http://localhost:5000/api/expenses', {
-//           method: 'POST',
-//           headers: { 'Content-Type': 'application/json' },
-//           body: JSON.stringify(newExpense),
-//         });
-//         const data = await response.json();
-//         setExpenses([...expenses, data]);
-//         setShowAddForm(false);
-//         setNewExpense({ date: '', category: '', amount: '', description: '' });
-//       } catch (error) {
-//         console.error('Error adding expense:', error);
-//       }
-//     }
-//   };
-
-//   return (
-//     <div>
-//       <Navbar />
-//       <div className="flex justify-between items-center mb-6">
-//         <h1 className="text-2xl font-semibold text-gray-900">செலவுகள்</h1>
-//         <button
-//           onClick={() => setShowAddForm(true)}
-//           className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-//         >
-//           <Plus className="w-4 h-4 mr-2" /> செலவு சேர்க்க
-//         </button>
-//       </div>
-
-//       {showAddForm && (
-//         <div className="mb-8 bg-white p-6 rounded-lg shadow">
-//           <h2 className="text-lg font-medium mb-4">புதிய செலவு சேர்க்க</h2>
-//           <form onSubmit={handleAddExpense} className="grid grid-cols-2 gap-4">
-//             <div>
-//               <label className="block text-sm font-medium text-gray-700">தேதி</label>
-//               <input
-//                 type="date"
-//                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-//                 value={newExpense.date}
-//                 onChange={(e) => setNewExpense({ ...newExpense, date: e.target.value })}
-//               />
-//             </div>
-//             <div>
-//               <label className="block text-sm font-medium text-gray-700">வகை</label>
-//               <select
-//                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-//                 value={newExpense.category}
-//                 onChange={(e) => setNewExpense({ ...newExpense, category: e.target.value })}
-//               >
-//                 <option value="">வகையைத் தேர்ந்தெடுக்கவும்</option>
-//                 <option>தீவனம்</option>
-//                 <option>மருத்துவம்</option>
-//                 <option>உபகரணங்கள்</option>
-//                 <option>வேலையாட்கள்</option>
-//                 <option>பயன்பாடுகள்</option>
-//                 <option>மற்றவை</option>
-//               </select>
-//             </div>
-//             <div>
-//               <label className="block text-sm font-medium text-gray-700">தொகை (₹)</label>
-//               <input
-//                 type="number"
-//                 step="1"
-//                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-//                 value={newExpense.amount}
-//                 onChange={(e) => setNewExpense({ ...newExpense, amount: e.target.value })}
-//               />
-//             </div>
-//             <div className="col-span-2">
-//               <label className="block text-sm font-medium text-gray-700">விவரம்</label>
-//               <textarea
-//                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-//                 rows={3}
-//                 value={newExpense.description}
-//                 onChange={(e) => setNewExpense({ ...newExpense, description: e.target.value })}
-//               ></textarea>
-//             </div>
-//             <div className="col-span-2 flex justify-end gap-4">
-//               <button
-//                 type="button"
-//                 onClick={() => setShowAddForm(false)}
-//                 className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
-//               >
-//                 ரத்து செய்
-//               </button>
-//               <button
-//                 type="submit"
-//                 className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700"
-//               >
-//                 சேமி
-//               </button>
-//             </div>
-//           </form>
-//         </div>
-//       )}
-//     </div>
-//   );
-// }
-
-// export default Expenses;
-
-
-
+export default Expenses
 

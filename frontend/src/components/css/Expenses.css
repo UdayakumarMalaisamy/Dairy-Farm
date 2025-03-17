@@ -1,0 +1,90 @@
+.expenses-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.header-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.total-expenses-card {
+  background-color: #ffffff;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  margin-bottom: 1.5rem;
+}
+
+.total-expenses-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.total-expenses-card h5 {
+  color: #64748b;
+  font-size: 0.875rem;
+  margin-bottom: 0.5rem;
+}
+
+.total-expenses-card h4 {
+  color: #0f172a;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.expense-form .form-label {
+  font-weight: 500;
+  color: #475569;
+  margin-bottom: 0.5rem;
+}
+
+.expense-form .form-control,
+.expense-form .form-select {
+  border-radius: 0.5rem;
+  border-color: #cbd5e1;
+  padding: 0.625rem 0.75rem;
+}
+
+.expense-form .form-control:focus,
+.expense-form .form-select:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 0.25rem rgba(59, 130, 246, 0.25);
+}
+
+.expense-table {
+  border-radius: 0.75rem;
+  overflow: hidden;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.expense-table th,
+.expense-table td {
+  text-align: left;
+  vertical-align: middle;
+  padding: 1rem;
+}
+
+.expense-table th {
+  background-color: #f1f5f9;
+  color: #475569;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+}
+
+.expense-table tbody tr:hover {
+  background-color: #f8fafc;
+}
+
+.expense-amount {
+  font-weight: 600;
+  color: #ef4444;
+}
+

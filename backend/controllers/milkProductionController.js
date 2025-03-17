@@ -1,30 +1,27 @@
-const MilkProduction = require('../models/MilkProduction');
-
-// Get all milk production records
-exports.getAllMilkProductions = async (req, res) => {
-  try {
-    const milkProductions = await MilkProduction.find();
-    res.status(200).json(milkProductions);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-};
-
 // Add a new milk production record
-exports.addMilkProduction = async (req, res) => {
-  const milkProduction = new MilkProduction({
-    id: req.body.id,
-    date: req.body.date,
-    quantity: req.body.quantity,
-    quality: req.body.quality,
-    cowId: req.body.cowId,
-    shift: req.body.shift,
-  });
-
+app.post('/api/milk-production', async (req, res) => {
   try {
-    const newMilkProduction = await milkProduction.save();
-    res.status(201).json(newMilkProduction);
-  } catch (err) {
-    res.status(400).json({ message: err.message });
+    const { cowId, quantity, quality, shift } = req.body;
+
+    if (!cowId || !quantity || !shift) {
+      return res.status(400).json({ error: 'Missing required fields' });
+    }
+
+    const newRecord = new MilkProduction({
+      cowId,
+      quantity,
+      quality,
+      shift,
+    });
+
+    await newRecord.save();
+    res.status(201).json(newRecord);
+  } catch (error) {
+    res.status(500).json({ error: 'Error adding milk production record' });
   }
-};
+});
+
+// Start the server
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
+});

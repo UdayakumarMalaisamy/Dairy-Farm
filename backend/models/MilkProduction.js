@@ -1,12 +1,10 @@
-const mongoose = require('mongoose');
-
+// Milk Production Schema
 const milkProductionSchema = new mongoose.Schema({
-  id: { type: String, required: true, unique: true },
-  date: { type: Date, required: true },
-  quantity: { type: Number, required: true },
-  quality: { type: String, required: true },
   cowId: { type: String, required: true },
-  shift: { type: String, required: true },
+  quantity: { type: Number, required: true },
+  quality: { type: String, default: 'தரம் A' },
+  shift: { type: String, enum: ['காலை', 'மாலை'], required: true },
+  date: { type: Date, default: Date.now },
 });
 
-module.exports = mongoose.model('MilkProduction', milkProductionSchema);
+const MilkProduction = mongoose.model('MilkProduction', milkProductionSchema);
