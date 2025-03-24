@@ -1,0 +1,142 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  background-color: #f1f5f9;
+  box-shadow: 0 4px 6px -1px rgba(243, 245, 245, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border-radius: 5px;
+  margin-bottom: 2rem;
+  position: relative;
+  
+}
+
+.profile-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.brand-link {
+  text-decoration: none;
+}
+
+.profile-container h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0;
+  color: #1e40af;
+  transition: color 0.3s ease;
+}
+
+nav {
+  display: flex;
+  gap: 2rem;
+  margin-left: auto;
+  align-items: center;
+}
+
+nav a {
+  text-decoration: none;
+  color: #475569;
+  font-size: 1rem;
+  font-weight: 500;
+  position: relative;
+  padding-bottom: 0.25rem;
+  transition: color 0.3s ease;
+}
+
+nav a::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 3px;
+  background: #3b82f6;
+  left: 0;
+  bottom: 0;
+  transition: width 0.3s ease;
+  border-radius: 1.5px;
+}
+
+nav a:hover {
+  color: #1e40af;
+}
+
+nav a:hover::after,
+nav a.active::after {
+  width: 100%;
+}
+
+nav a.active {
+  color: #1e40af;
+  font-weight: 600;
+}
+
+.menu-icon {
+  display: none;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  padding: 0.5rem;
+  color: #1e40af;
+}
+
+.language-button {
+  background-color: #62f5e6;
+  color: #1e40af;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.language-button:hover {
+  background-color: #1e40af;
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    padding: 1rem;
+  }
+
+  .profile-container h1 {
+    font-size: 1.25rem;
+  }
+
+  .menu-icon {
+    display: block;
+  }
+
+  nav {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    right: 1rem;
+    background-color: white;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    z-index: 10;
+    width: 200px;
+    gap: 1rem;
+  }
+
+  nav.open {
+    display: flex;
+  }
+
+  nav a {
+    width: 100%;
+    padding: 0.5rem 0;
+  }
+
+  .language-button {
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+}
+

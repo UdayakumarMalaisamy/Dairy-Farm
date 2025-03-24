@@ -1,0 +1,115 @@
+/* Cow Management Styles */
+.cow-management-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.header-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+/* Modal Styling */
+.modal-title {
+  font-weight: 700;
+  text-align: center;
+  width: 100%;
+  color: #1e40af;
+}
+
+/* Table Styling */
+.cow-table {
+  border-radius: 0.75rem;
+  overflow: hidden;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.cow-table th,
+.cow-table td {
+  text-align: center;
+  vertical-align: middle;
+  padding: 1rem;
+}
+
+.cow-table th {
+  background-color: #f1f5f9;
+  color: #475569;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+}
+
+.cow-table tbody tr:hover {
+  background-color: #f8fcfb;
+}
+
+/* Badge Styling */
+.status-badge {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  display: inline-block;
+}
+
+.status-badge.healthy {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+.status-badge.pregnant {
+  background-color: #dbeafe;
+  color: #1e40af;
+}
+
+.status-badge.sick {
+  background-color: #fef9c3;
+  color: #854d0e;
+}
+
+.status-badge.no-milk {
+  background-color: #fee2e2;
+  color: #b91c1c;
+}
+
+/* Form Styling */
+.cow-form .form-label {
+  font-weight: 500;
+  color: #475569;
+  margin-bottom: 0.5rem;
+}
+
+.cow-form .form-control,
+.cow-form .form-select {
+  border-radius: 0.5rem;
+  border-color: #cbd5e1;
+  padding: 0.625rem 0.75rem;
+}
+
+.cow-form .form-control:focus,
+.cow-form .form-select:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 0.25rem rgba(59, 130, 246, 0.25);
+}
+
+/* Language Button */
+.language-toggle {
+  background-color: #f1f5f9;
+  color: #1e40af;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.language-toggle:hover {
+  background-color: #1e40af;
+  color: white;
+}
+
+
